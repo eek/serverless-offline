@@ -12,7 +12,11 @@ import {
   DEFAULT_LAMBDA_TIMEOUT,
   supportedRuntimes,
 } from '../config/index.js'
-import { createUniqueId, splitHandlerPathAndName } from '../utils/index.js'
+import {
+  createUniqueId,
+  splitHandlerPathAndName,
+  getHandlerName,
+} from '../utils/index.js'
 
 const { keys } = Object
 const { ceil } = Math
@@ -56,7 +60,8 @@ export default class LambdaFunction {
     // TODO FIXME look into better way to work with serverless-webpack
     const _servicePath = resolve(servicePath, options.location || '')
 
-    const { handler, name, package: functionPackage = {} } = functionDefinition
+    const { name, package: functionPackage = {} } = functionDefinition
+    const handler = getHandlerName(functionDefinition)
     const [handlerPath, handlerName, handlerModuleNesting] =
       splitHandlerPathAndName(handler)
 
